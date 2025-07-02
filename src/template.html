@@ -3,20 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cri's Todo List</title>
 </head>
 <body>
-    <header>
-        <nav>    
-            <button id="homeButton">Home</button>
-            <button id="aboutButton">About</button>
-            <button id="contactButton">Contact</button>
-        </nav>  
-    </header>
-    <div class="content">    
-        
+
+    <div id="app">
+
+        <div class="left container">
+
+            <div class="left-top-container">
+                <img class="logo" src="./img/augmented-reality-svgrepo-com.svg" alt="logo">
+                <h1 class="title">ToDo's</h1>
+            </div>
+
+            <div class="left-center-container">
+                <img class="plus-symbol-project" src="./img/add-circle-svgrepo-com.svg" alt="add-project">            
+                <button class="add project">Add Project</button>
+            </div>
+
+            <div class="left-bottom-container">
+                <h2>All projects</h2>
+                <div class="projects-container">
+
+                    <div class="project-IDPROJECT">
+                        <div class="project-header">
+                            <h3 class="project-title"> Projecto 1</h3>
+                            <button class="add-task">+Task</button>
+                        </div>
+                        <div class="task">
+                            <h4 class="task-name">Task 1</h4>
+                            <button class="remove-task">X</button>
+                        </div>
+                        <div class="task">
+                            <h4 class="task-name">Task 2</h4>
+                            <button class="remove-task">X</button>
+                        </div>
+                        <div class="task">
+                            <h4 class="task-name">Task 3</h4>
+                            <button class="remove-task">X</button>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="right container">
+
+            <div class="new task container">
+                <div class="task details row">New Task Details: </div>
+                <div class="task details row">
+                    <div class="task detail">Task Name:</div>
+                    <div class="task detail">Add task name</div>
+                </div>
+                <div class="task details row">
+                    <div class="task detail">Project Folder:</div>
+                    <div class="task detail">Please choose a destination</div>
+                </div>
+                <div class="task details row">
+                    <div class="task detail">Description:</div>
+                    <div class="task detail">...</div>
+                </div>
+                <div class="task details row">
+                    <div class="task detail">Notes:</div>
+                    <div class="task detail">...</div>
+                </div>
+                <div class="task details row">
+                    <div class="task detail">Add</div>
+                    <div class="task detail">Cancel</div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
+    
 </body>
 </html>
+
 
 

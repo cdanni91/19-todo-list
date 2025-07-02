@@ -5,7 +5,7 @@
   "main": "javascript.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buid": "webpack",
+    "build": "webpack",
     "dev": "webpack serve",
     "deploy": "git subtree push --prefix dist origin gh-pages"
   },
