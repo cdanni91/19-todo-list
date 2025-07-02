@@ -1,0 +1,92 @@
+:root {
+    --margin: 22px;
+    --radius: 10px;
+    --center-text: 50px;
+}
+
+body {
+    background-color: rgb(110, 103, 103);
+    height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    
+    
+    display: grid;
+    grid-template-rows: 1fr 8fr;
+}
+
+    header {
+        display: flex;
+        justify-content: center;
+        background-image: url(./imgs/129054-ORHORX-401.jpg);
+        background-size: 100%;
+    }
+
+    
+        nav {
+            display: flex;
+            width: 100%;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+            #homeButton,
+            #aboutButton,
+            #contactButton {
+                font-size: 2rem;
+                border-radius: var(--radius);
+                background-color: rgba(111, 112, 112, 0.89);
+                color: rgb(255, 255, 255);
+            }
+
+            #homeButton:hover,
+            #aboutButton:hover,
+            #contactButton:hover {
+                box-shadow: 0px 2px 4px rgb(255, 255, 255);
+            }
+
+    .content {
+        display: flex;
+        justify-content: center;
+    }
+
+        .home {
+            background-image: url(./imgs/4434419.jpg) ;
+            background-size: 100%;
+        }
+
+        .contact {
+            background-image: url(./imgs/pizza-4968645_1280.jpg) ;
+            background-size: 100%;
+        }
+
+        .about {
+            background-image: url(./imgs/depositphotos_217981402-stock-photo-set-pizza-black-wooden-background.jpg) ;
+            background-size: 100%;
+        }
+
+        .home,
+        .contact,
+        .about {
+            height: 100%;
+            width: 100%;
+            display: grid;
+            grid-template-rows: 1fr 4fr 1fr;
+        }
+
+        
+            .title,
+            .description,
+            .hours {
+                border: 1px solid black;
+                margin: var(--margin);
+                background-color: rgba(234, 235, 230, 0.9);
+                border-radius: var(--radius);
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .description {
+                padding: var(--center-text);
+            }
