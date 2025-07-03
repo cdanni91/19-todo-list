@@ -1,3 +1,7 @@
+import { Checker } from "./shared.js";
+import { FunctionFactory } from "./shared.js";
+
+
 class Task {
 
     //private variables
@@ -11,20 +15,82 @@ class Task {
         this.#isCompleted = false;
     }
 
-    printTask() {
-        console.log(`${this.name} , ${this.description} , ${this.#isCompleted}`)
+    
+    // methods for class, utiles cuando no depende de estados internos
+    static printClass() {
+        console.log(this);
+    }
+
+    // methods
+    printTaskInfo() {
+        console.log(this)
     }
 
     markAsComplete() {
         this.#isCompleted = true;
     }
+
+    markAsPending() {
+        this.#isCompleted = false;
+    }
+
 }
 
 
-const newTask = new Task("comprar carne", "necesito comprar pal coco");
+class Project {
 
-newTask.printTask();
+    #tasks;
 
-newTask.markAsComplete();
+    checker = Checker(); 
 
-newTask.printTask();
+    constructor(name) {
+        this.name = name;
+        this.#tasks = [];
+    }
+
+
+    printTasks() {
+        console.log(this.#tasks);
+    }
+
+    
+    addTask(task) {
+        // revisa si la task es una instancia de la clase Task y la agrega
+        if (!this.checker.checkIfInstanceOf(task,Task)) return;
+        this.#tasks.push(task);
+    }
+
+}
+
+
+class ProjectManager {
+
+    #projects;
+
+    checker = Checker(); 
+
+    constructor() {
+        this.#projects = [];
+    }
+
+    addProject(project) {
+        if (!this.checker.checkIfInstanceOf(project,Project)) return;
+        this.#projects.push(project);
+    }
+
+    printProjects() {
+        console.log(this.#projects);
+    }
+
+}
+
+
+
+
+export {Task, Project, ProjectManager}
+
+
+
+
+
+
