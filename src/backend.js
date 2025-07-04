@@ -1,5 +1,5 @@
-import { Checker } from "./shared.js";
-import { FunctionFactory } from "./shared.js";
+import { Checker } from "./shared";
+import { FunctionFactory } from "./shared";
 
 
 class Task {
@@ -7,9 +7,10 @@ class Task {
     //private variables
     #isCompleted
 
-    constructor(name, description) {
+    constructor(name, description, notes = "") {
         this.name = name;
         this.description = description;
+        this.notes = notes;
 
         //you must use the #
         this.#isCompleted = false;
