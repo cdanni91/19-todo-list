@@ -1,7 +1,7 @@
 import "./styles.css";
 import { FunctionFactory } from "./shared";
 import { Task, Project, ProjectManager } from "./backend";
-
+import { modifyUInewTaskForm, eraseNewTaskContainer, defaultUITaskContainer } from "./frontend";
 
 
 const functionFactory = FunctionFactory();
@@ -57,13 +57,16 @@ function createTaskForm () {
 
     // create form
     const newTaskForm = functionFactory.createNewElement("form","newTaskForm");
-    // create all labels and inputs
+    // create all rows, labels and inputs
     for (let i=0; i < newTaskFormLabelElements.length; i++) {
+        const taskFormRow = functionFactory.createNewElement("div","task-form-row");
         const newLabelElement = functionFactory.createLabelOrInput(i, newTaskFormLabelElements);
         const newInputElement = functionFactory.createLabelOrInput(i, newTaskFormInputElements)
-        functionFactory.appendChildToElement(newTaskForm, newLabelElement);
-        functionFactory.appendChildToElement(newTaskForm, newInputElement);
+        functionFactory.appendChildToElement(taskFormRow, newLabelElement);
+        functionFactory.appendChildToElement(taskFormRow, newInputElement);
+        functionFactory.appendChildToElement(newTaskForm, taskFormRow);
     }
+
     //create submit button
     const formSubmitButton = functionFactory.createNewElement("button","",newTaskSubmit,"Submit");
     functionFactory.appendChildToElement(newTaskForm, formSubmitButton);
@@ -73,42 +76,36 @@ function createTaskForm () {
     functionFactory.appendChildToElement(newTaskForm, formCancelButton);
 
     //change the behaviour on submit and cancel buttons
-    modifyFormBehaviour(newTaskForm, formCancelButton);
+    modifyFormBehaviour(newTaskForm, formSubmitButton, formCancelButton, Task);
 
     return newTaskForm
 }
 
 
 
-function eraseNewTaskContainer () {
-
-    const container = functionFactory.getElement(".new.task.container");
-    functionFactory.removeElementHTML(container);
-
-}
-
-
-function modifyFormBehaviour(newTaskForm, formCancelButton) {
+function modifyFormBehaviour(newTaskForm, formSubmitButton, formCancelButton, Task) {
 
     function modifyFormSubmit() {
-
+        // prevent default
         newTaskForm.addEventListener("submit", function(e) {
             e.preventDefault();
-    
-            const submitButton = functionFactory.getElement("button[type=submit");
-            const formData = new FormData(newTaskForm, submitButton);
-            const formDataObject = Object.fromEntries(formData.entries());
-    
-            console.log(formDataObject);
-            eraseNewTaskContainer();
-        })
+        // creates an object with the form data
+            const formData = new FormData(newTaskForm, formSubmitButton);
+            const dataObject = Object.fromEntries(formData.entries())                    
+            const newTask = new Task (  dataObject.task_name, 
+                                        dataObject.task_description, 
+                                        dataObject.task_notes);
+            console.log(newTask);
 
-    }
+        });
+        }
+    
+    
 
     function modifyFormCancel() {
-
         formCancelButton.addEventListener("click", () => {
             eraseNewTaskContainer();
+            defaultUITaskContainer();
         })
 
     }
@@ -119,21 +116,11 @@ function modifyFormBehaviour(newTaskForm, formCancelButton) {
 }
 
 
-
-function modifyUInewTaskForm(newTaskForm) {
-
-    const elementToModify = functionFactory.getElement(".new.task.container")
-    functionFactory.removeElementHTML(elementToModify);
-    functionFactory.appendChildToElement(elementToModify, newTaskForm);
-
-}
-
-
-
-
+     
 function newTaskAction() {
 
     const newTaskForm = createTaskForm();
+    console.log(newTaskForm); //
     modifyUInewTaskForm(newTaskForm);
 
 }
@@ -144,6 +131,23 @@ function newTaskAction() {
 
 
 // test
+
+//render default page
+    //  add default project
+// add page functionality
+    //  add task
+        // create form (rows,labels,inputs and buttons)
+            // on submit get an object with the task data
+
+
+    //  delete task
+
+    //  new project
+    //  delete project
+
+
+
+defaultUITaskContainer();
 const addTaskButton = functionFactory.getElement(".add-task");
 
 addTaskButton.addEventListener("click", () => {
