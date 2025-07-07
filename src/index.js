@@ -1,7 +1,7 @@
 import "./styles.css";
 import { FunctionFactory } from "./shared";
 import { Task, Project, ProjectManager } from "./backend";
-import { modifyUInewTaskForm, eraseNewTaskContainer, defaultUITaskContainer } from "./frontend";
+import { modifyUIRightContainer, eraseNewTaskContainer, defaultUITaskContainer, modifyUIProjectsContainer } from "./frontend";
 
 
 const functionFactory = FunctionFactory();
@@ -83,23 +83,57 @@ function createTaskForm () {
 
 
 
-function modifyFormBehaviour(newTaskForm, formSubmitButton, formCancelButton, Task) {
+function modifyFormBehaviour(newForm, formSubmitButton, formCancelButton, objectClass) {
 
     function modifyFormSubmit() {
         // prevent default
-        newTaskForm.addEventListener("submit", function(e) {
+        newForm.addEventListener("submit", function(e) {
             e.preventDefault();
         // creates an object with the form data
-            const formData = new FormData(newTaskForm, formSubmitButton);
+            const formData = new FormData(newForm, formSubmitButton);
             const dataObject = Object.fromEntries(formData.entries())                    
-            const newTask = new Task (  dataObject.task_name, 
-                                        dataObject.task_description, 
-                                        dataObject.task_notes);
-            console.log(newTask);
+            const newObj = instanceData(dataObject, objectClass);
+
+            // crear el elemento html del nuevo proyecto
+
+            console.log(formData);
+            console.log(dataObject);
+            console.log(newObj);
+
+            // crear el elemento html con la data del nombre y su boton (orientarse con el IDPROJECT para llegar al boton + correspodniente?)
+            // pasar el project al project manager
+
+            //
+            /* const newProject = new Project("Nuevo project");
+            console.log(newProject);
+            newProject.addTask(newTask);
+            console.log(newProject); */
 
         });
         }
     
+    
+    function instanceData(dataObject, ClassType) {
+        switch (ClassType) {
+
+            case Task:
+                const newTask = new ClassType(
+                    dataObject.task_name,
+                    dataObject.task_description,
+                    dataObject.task_notes
+                );
+                return newTask;
+
+            case Project:
+                const newProject = new ClassType(dataObject.project_name);
+                return newProject;
+
+            default:
+                console.error("Tipo de clase no reconocido.");
+                return null;
+        }
+}
+
     
 
     function modifyFormCancel() {
@@ -121,7 +155,73 @@ function newTaskAction() {
 
     const newTaskForm = createTaskForm();
     console.log(newTaskForm); //
-    modifyUInewTaskForm(newTaskForm);
+    modifyUIProjectsContainer();
+    modifyUIRightContainer(newTaskForm);
+
+}
+
+
+
+
+///////////////////////////////////////////////
+
+
+const newProjectFormLabelElements = [
+    //type  //class  //attributes   //text
+    ["label", "", {for : "projectname"}, "Project Name"],
+];
+
+const newProjectFormInputElements = [
+    //type  //class  //attributes
+    ["input", "", { type : "text",
+                    id : "projectname",
+                    name : "project_name",
+                    placeholder : "Put the name of project",
+                    required : ""}
+    ]
+]
+
+const newProjectSubmit = {
+    type : "submit"
+}
+
+function createProjectForm() {
+    // crea un formulario con label project name, un text input boton submit y cancel
+    // al hacer submit tiene que prevent default, crear un objeto con la form data
+    // crear el elemento html con la data del nombre y su boton (orientarse con el IDPROJECT para llegar al boton + correspodniente?)
+    // pasar el project al project manager
+
+    // create form, rows, labels and input
+    const newProjectForm = functionFactory.createNewElement("form", "projectForm");
+    for (let i=0; i < newProjectFormLabelElements.length; i++) {
+        const projectFormRow = functionFactory.createNewElement("div","project-form-row");
+        const newLabelElement = functionFactory.createLabelOrInput(i, newProjectFormLabelElements);
+        const newInputElement = functionFactory.createLabelOrInput(i, newProjectFormInputElements)
+        functionFactory.appendChildToElement(projectFormRow, newLabelElement);
+        functionFactory.appendChildToElement(projectFormRow, newInputElement);
+        functionFactory.appendChildToElement(newProjectForm, projectFormRow);
+
+        //create submit button
+        const formSubmitButton = functionFactory.createNewElement("button","",newProjectSubmit,"Submit");
+        const formCancelButton = functionFactory.createNewElement("button","cancel","","Cancel");
+        // append buttons
+        functionFactory.appendChildToElement(newProjectForm, formSubmitButton);
+        functionFactory.appendChildToElement(newProjectForm, formCancelButton);
+
+        // modify the form submit
+        modifyFormBehaviour(newProjectForm, formSubmitButton, formCancelButton, Project);
+  
+    }
+    return newProjectForm
+}
+
+
+function newProjectAction() {
+
+    const newProjectForm = createProjectForm();
+    console.log(newProjectForm); //
+    modifyUIRightContainer(newProjectForm);
+    //modifyUInewTaskForm(newTaskForm);
 
 }
 
@@ -129,27 +229,18 @@ function newTaskAction() {
 
 
 
-
-// test
-
-//render default page
-    //  add default project
-// add page functionality
-    //  add task
-        // create form (rows,labels,inputs and buttons)
-            // on submit get an object with the task data
-
-
-    //  delete task
-
-    //  new project
-    //  delete project
-
-
-
+// execute
 defaultUITaskContainer();
-const addTaskButton = functionFactory.getElement(".add-task");
 
+
+// new task
+const addTaskButton = functionFactory.getElement(".add-task");
 addTaskButton.addEventListener("click", () => {
     newTaskAction();
+    
+})
+// new project
+const addProjectButton = functionFactory.getElement(".add.project");
+addProjectButton.addEventListener("click", () => {
+    newProjectAction();
 })

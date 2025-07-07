@@ -61,6 +61,10 @@ class Project {
         this.#tasks.push(task);
     }
 
+    getTasks() {
+        return this.#tasks
+    }
+
 }
 
 
@@ -81,6 +85,10 @@ class ProjectManager {
 
     printProjects() {
         console.log(this.#projects);
+    }
+
+    getProjects() {
+        return this.#projects
     }
 
 }
