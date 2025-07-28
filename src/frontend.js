@@ -22,7 +22,7 @@ function modifyUIRightContainer(elementToShow) {
 function modifyUIProjectsContainer() {
 
     // dummy data
-    // const testTask1 = new Task("primera", "random task", "no");
+    const testTask1 = new Task("primera", "random task", "no");
     // const testTask2 = new Task("2", "random task", "2");
     // const testTask3 = new Task("3", "random task", "3");
     // const testProject1 = new Project("primer_test_project");
@@ -57,11 +57,8 @@ function modifyUIProjectsContainer() {
 
         // modificamos el boton de agregar tareas y lo vinculamos?
         addTaskButton.addEventListener("click", () => {
-            console.log("Hola");
-            newTaskAction();
-        }
-
-        )
+            newTaskAction(project); // <- PASAR el proyecto actual
+        });
 
         //
 
@@ -79,6 +76,13 @@ function modifyUIProjectsContainer() {
         const newTaskContainer = functionFactory.createNewElement("div", "task", "");
             const newTaskNameContainer = functionFactory.createNewElement("div", "task-name", "", task.name);
             const removeTaskButton = functionFactory.createNewElement("button","remove-task","","X");
+        
+        removeTaskButton.addEventListener("click", () => {
+            // removes the html but also has to update the project
+            functionFactory.removeElementHTML(newTaskContainer);
+            project.removeTask(task);
+            
+        })
         // appends
         functionFactory.appendChildToElement(newTaskContainer,newTaskNameContainer);
         functionFactory.appendChildToElement(newTaskContainer,removeTaskButton);

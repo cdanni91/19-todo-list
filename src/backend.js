@@ -61,6 +61,21 @@ class Project {
         this.#tasks.push(task);
     }
 
+    removeTask(taskToRemove) { // Renamed parameter to 'taskToRemove' for clarity
+        // revisa si la task es una instancia de la clase Task
+        if (!this.checker.checkIfInstanceOf(taskToRemove, Task)) return
+        
+        // Find the index of the task to remove
+        const index = this.#tasks.findIndex(task => task === taskToRemove);
+
+        if (index > -1) { // If the task is found (index is not -1)
+            this.#tasks.splice(index, 1); // Remove it using splice
+            console.log(`Task '${taskToRemove.name}' removed from project '${this.name}'.`);
+        } else {
+            console.warn(`Task '${taskToRemove.name}' not found in project '${this.name}'.`);
+        }
+    }
+
     getTasks() {
         return this.#tasks
     }
@@ -89,6 +104,10 @@ class ProjectManager {
 
     getProjects() {
         return this.#projects
+    }
+
+    getProject(projectName) {
+        return this.#projects.find(project => project.name === projectName);
     }
 
 }

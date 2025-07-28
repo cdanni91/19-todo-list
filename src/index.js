@@ -12,7 +12,7 @@ const functionFactory = FunctionFactory();
     // al hacer submit se ejecuta una funcion para obtener la informacion 
 
 
-function createTaskForm () {
+function createTaskForm (project) {
 
     //const newTaskFormAttr = {
         //action : "executeSomeScript.js",
@@ -76,14 +76,14 @@ function createTaskForm () {
     functionFactory.appendChildToElement(newTaskForm, formCancelButton);
 
     //change the behaviour on submit and cancel buttons
-    modifyFormBehaviour(newTaskForm, formSubmitButton, formCancelButton, Task);
+    modifyFormBehaviour(newTaskForm, formSubmitButton, formCancelButton, Task, project);
 
     return newTaskForm
 }
 
 
 
-function modifyFormBehaviour(newForm, formSubmitButton, formCancelButton, objectClass) {
+function modifyFormBehaviour(newForm, formSubmitButton, formCancelButton, objectClass, project) {
 
 
 
@@ -100,9 +100,17 @@ function modifyFormBehaviour(newForm, formSubmitButton, formCancelButton, object
             // si es task o project que siga caminos distintos
             switch (objectClass) {
 
+               
                 case Task:
-                    console.log("Task")
-
+                    // Agregar la tarea al proyecto
+                    project.addTask(newObj);
+                    // Actualizar la UI
+                    clearUIProjectsContainer();
+                    modifyUIProjectsContainer();
+                    eraseNewTaskContainer();
+                    defaultUITaskContainer();
+                    
+            
 
                 case Project:
                     // agregar project al project manager y limpiar la UI
@@ -156,13 +164,9 @@ function modifyFormBehaviour(newForm, formSubmitButton, formCancelButton, object
 
 
      
-function newTaskAction() {
-
-    const newTaskForm = createTaskForm();
-    console.log(newTaskForm); //
-    //modifyUIProjectsContainer(); <- No se para que pus esto
+function newTaskAction(project) {
+    const newTaskForm = createTaskForm(project);
     modifyUIRightContainer(newTaskForm);
-
 }
 
 
