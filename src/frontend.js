@@ -1,5 +1,6 @@
 import { FunctionFactory } from "./shared";
 import { ProjectManager, Project, Task } from "./backend";
+import { createTaskForm, newTaskAction } from ".";
 
 const functionFactory = FunctionFactory();
 const projectManager = new ProjectManager();
@@ -21,24 +22,24 @@ function modifyUIRightContainer(elementToShow) {
 function modifyUIProjectsContainer() {
 
     // dummy data
-    const testTask1 = new Task("primera", "random task", "no");
-    const testTask2 = new Task("2", "random task", "2");
-    const testTask3 = new Task("3", "random task", "3");
-    const testProject1 = new Project("primer_test_project");
-    const testProject2 = new Project("segundo_test_project");
-    testProject1.addTask(testTask1);
-    testProject2.addTask(testTask1);
-    testProject2.addTask(testTask2);
-    testProject2.addTask(testTask3);
+    // const testTask1 = new Task("primera", "random task", "no");
+    // const testTask2 = new Task("2", "random task", "2");
+    // const testTask3 = new Task("3", "random task", "3");
+    // const testProject1 = new Project("primer_test_project");
+    // const testProject2 = new Project("segundo_test_project");
+    // testProject1.addTask(testTask1);
+    // testProject2.addTask(testTask1);
+    // testProject2.addTask(testTask2);
+    // testProject2.addTask(testTask3);
 
 
-    projectManager.addProject(testProject1);
-    projectManager.addProject(testProject2);
-    projectManager.printProjects();
+    // projectManager.addProject(testProject1);
+    // projectManager.addProject(testProject2);
+    // projectManager.printProjects();
 
     // limpia el contenedor de projects (1)
     const allProjectsContainer = functionFactory.getElement(".projects-container");
-    functionFactory.removeElementHTML(allProjectsContainer);
+    //functionFactory.removeElementHTML(allProjectsContainer);
 
     // obtenemos todos los proyectos (2)
     const projects = projectManager.getProjects();
@@ -53,6 +54,18 @@ function modifyUIProjectsContainer() {
             const newProjectHeader = functionFactory.createNewElement("div","project-header");
                 const newProjectTitle =  functionFactory.createNewElement("div","project-title","",project.name);
                 const addTaskButton = functionFactory.createNewElement("button","add-task", "", "+");
+
+        // modificamos el boton de agregar tareas y lo vinculamos?
+        addTaskButton.addEventListener("click", () => {
+            console.log("Hola");
+            newTaskAction();
+        }
+
+        )
+
+        //
+
+
         // appends
         functionFactory.appendChildToElement(newProjectHeader,newProjectTitle);
         functionFactory.appendChildToElement(newProjectHeader,addTaskButton);
@@ -86,7 +99,11 @@ function modifyUIProjectsContainer() {
 
 }
 
+function clearUIProjectsContainer() {
 
+    const allProjectsContainer = functionFactory.getElement(".projects-container");
+    functionFactory.removeElementHTML(allProjectsContainer);
+}
 
 function defaultUITaskContainer() {
     const title = functionFactory.createNewElement("h1","greetings-title","","Hola");
@@ -102,4 +119,4 @@ function defaultUITaskContainer() {
 }
 
 
-export {eraseNewTaskContainer, modifyUIRightContainer, defaultUITaskContainer, modifyUIProjectsContainer}
+export {eraseNewTaskContainer, modifyUIRightContainer, defaultUITaskContainer, modifyUIProjectsContainer, clearUIProjectsContainer, projectManager}

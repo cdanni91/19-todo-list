@@ -1,8 +1,8 @@
 import "./styles.css";
 import { FunctionFactory } from "./shared";
-import { Task, Project, ProjectManager } from "./backend";
-import { modifyUIRightContainer, eraseNewTaskContainer, defaultUITaskContainer, modifyUIProjectsContainer } from "./frontend";
-
+import { Task, Project} from "./backend";
+import { modifyUIRightContainer, eraseNewTaskContainer, defaultUITaskContainer, modifyUIProjectsContainer, clearUIProjectsContainer } from "./frontend";
+import { projectManager } from "./frontend";
 
 const functionFactory = FunctionFactory();
 
@@ -85,6 +85,9 @@ function createTaskForm () {
 
 function modifyFormBehaviour(newForm, formSubmitButton, formCancelButton, objectClass) {
 
+
+
+
     function modifyFormSubmit() {
         // prevent default
         newForm.addEventListener("submit", function(e) {
@@ -94,20 +97,22 @@ function modifyFormBehaviour(newForm, formSubmitButton, formCancelButton, object
             const dataObject = Object.fromEntries(formData.entries())                    
             const newObj = instanceData(dataObject, objectClass);
 
-            // crear el elemento html del nuevo proyecto
+            // si es task o project que siga caminos distintos
+            switch (objectClass) {
 
-            console.log(formData);
-            console.log(dataObject);
-            console.log(newObj);
+                case Task:
+                    console.log("Task")
 
-            // crear el elemento html con la data del nombre y su boton (orientarse con el IDPROJECT para llegar al boton + correspodniente?)
-            // pasar el project al project manager
 
-            //
-            /* const newProject = new Project("Nuevo project");
-            console.log(newProject);
-            newProject.addTask(newTask);
-            console.log(newProject); */
+                case Project:
+                    // agregar project al project manager y limpiar la UI
+                    clearUIProjectsContainer();
+                    projectManager.addProject(newObj);
+                    modifyUIProjectsContainer();
+                    eraseNewTaskContainer();
+                    defaultUITaskContainer();
+                    
+            }
 
         });
         }
@@ -155,7 +160,7 @@ function newTaskAction() {
 
     const newTaskForm = createTaskForm();
     console.log(newTaskForm); //
-    modifyUIProjectsContainer();
+    //modifyUIProjectsContainer(); <- No se para que pus esto
     modifyUIRightContainer(newTaskForm);
 
 }
@@ -215,7 +220,6 @@ function createProjectForm() {
     return newProjectForm
 }
 
-
 function newProjectAction() {
 
     const newProjectForm = createProjectForm();
@@ -244,3 +248,6 @@ const addProjectButton = functionFactory.getElement(".add.project");
 addProjectButton.addEventListener("click", () => {
     newProjectAction();
 })
+
+
+export {createTaskForm, newTaskAction}
