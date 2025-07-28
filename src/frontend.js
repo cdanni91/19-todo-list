@@ -19,22 +19,7 @@ function modifyUIRightContainer(elementToShow) {
 
 function modifyUIProjectsContainer() {
 
-    // dummy data
-    //const testTask1 = new Task("primera", "random task", "no");
-    // const testTask2 = new Task("2", "random task", "2");
-    // const testTask3 = new Task("3", "random task", "3");
-    // const testProject1 = new Project("primer_test_project");
-    // const testProject2 = new Project("segundo_test_project");
-    // testProject1.addTask(testTask1);
-    // testProject2.addTask(testTask1);
-    // testProject2.addTask(testTask2);
-    // testProject2.addTask(testTask3);
-
-
-    // projectManager.addProject(testProject1);
-    // projectManager.addProject(testProject2);
-    // projectManager.printProjects();
-
+ 
     // limpia el contenedor de projects (1)
     const allProjectsContainer = functionFactory.getElement(".projects-container");
     //functionFactory.removeElementHTML(allProjectsContainer);
@@ -46,8 +31,15 @@ function modifyUIProjectsContainer() {
     // ejecutar para actualizar el listado de projects (3)
     // por cada proyecto
     projects.forEach(project => {
+
         // creamos un div con classname project-"project.name"
-        const projectClassName = `project-`+`${project.name}`;
+        let dirtyProjectClassName = `project-${project.name}`;
+
+        // Reemplaza todos los espacios en blanco (s) con guiones bajos (_)
+        const projectClassName = dirtyProjectClassName.replace(/\s/g, '_');
+
+
+
         // html correspondiente al project
         const newProjectElement = functionFactory.createNewElement("div",projectClassName);
             const newProjectHeader = functionFactory.createNewElement("div","project-header");
@@ -61,8 +53,17 @@ function modifyUIProjectsContainer() {
             newTaskAction(project); // <- PASAR el proyecto actual
         });
         removeProjectButton.addEventListener("click", () => {
-            functionFactory.removeElementHTML(newProjectElement);
-            projectManager.removeProject(project);
+
+            const response = prompt("Are you sure? Write YES to delet project")
+
+            if (response === "YES") {
+
+                functionFactory.removeElementHTML(newProjectElement);
+                projectManager.removeProject(project);
+
+            } else return;
+
+            
         })
 
 
@@ -83,10 +84,36 @@ function modifyUIProjectsContainer() {
         
         removeTaskButton.addEventListener("click", () => {
             // removes the html but also has to update the project
-            functionFactory.removeElementHTML(newTaskContainer);
-            project.removeTask(task);
-            
+
+            const response = prompt("Are you sure? Write YES to delete task")
+
+            if (response === "YES") {
+                functionFactory.removeElementHTML(newTaskContainer);
+                project.removeTask(task);
+            } else {
+                return
+            }
         })
+
+        newTaskNameContainer.addEventListener("click", () => {
+            // modificamos la UI derecha para mostrar task name, description y notes
+            const taskNameContainer = functionFactory.createNewElement("div","task-name",{},`${task.name}`)
+            const taskDescriptionContainer = functionFactory.createNewElement("div","task-desc",{},`${task.description}`)
+            const taskNotesContainer = functionFactory.createNewElement("div","task-notes",{},`${task.notes}`)
+
+            const taskContainer = functionFactory.createNewElement("div");
+
+            functionFactory.appendChildToElement(taskContainer,taskNameContainer)
+            functionFactory.appendChildToElement(taskContainer,taskDescriptionContainer)
+            functionFactory.appendChildToElement(taskContainer,taskNotesContainer)
+
+            modifyUIRightContainer(taskContainer);
+
+
+
+
+        })
+
         // appends
         functionFactory.appendChildToElement(newTaskContainer,newTaskNameContainer);
         functionFactory.appendChildToElement(newTaskContainer,removeTaskButton);
