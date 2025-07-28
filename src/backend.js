@@ -110,6 +110,21 @@ class ProjectManager {
         return this.#projects.find(project => project.name === projectName);
     }
 
+    removeProject(projectToRemove) { // Renamed parameter to 'taskToRemove' for clarity
+        // revisa si la task es una instancia de la clase Task
+        if (!this.checker.checkIfInstanceOf(projectToRemove, Project)) return
+        
+        // Find the index of the task to remove
+        const index = this.#projects.findIndex(project => project === projectToRemove);
+
+        if (index > -1) { // If the task is found (index is not -1)
+            this.#projects.splice(index, 1); // Remove it using splice
+            console.log(`Project '${projectToRemove.name}' removed from project manager '${this.name}'.`);
+        } else {
+            console.warn(`Project '${projectToRemove.name}' not found in project manager '${this.name}'.`);
+        }
+    }
+
 }
 
 

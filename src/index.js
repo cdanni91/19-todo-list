@@ -6,10 +6,7 @@ import { projectManager } from "./frontend";
 
 const functionFactory = FunctionFactory();
 
-// el usuario hace click en agregar tarea
-    // se ejecuta una funcion que crea el formulario (OK)
-    // se ejecuta una funcion que modifica la UI (OK)
-    // al hacer submit se ejecuta una funcion para obtener la informacion 
+
 
 
 function createTaskForm (project) {
@@ -234,19 +231,29 @@ function newProjectAction() {
 }
 
 
+// loads default project and default tasks
+const testTask1 = new Task("primera", "random task", "no");
+const testTask2 = new Task("2", "random task", "2");
+const testTask3 = new Task("3", "random task", "3");
+const testProject2 = new Project("Default_Project");
+testProject2.addTask(testTask1);
+testProject2.addTask(testTask2);
+testProject2.addTask(testTask3);
+projectManager.addProject(testProject2);
 
 
+
+// loads default UI for projects
+modifyUIProjectsContainer();
 
 // execute
 defaultUITaskContainer();
 
 
-// new task
-const addTaskButton = functionFactory.getElement(".add-task");
-addTaskButton.addEventListener("click", () => {
-    newTaskAction();
-    
-})
+
+
+
+
 // new project
 const addProjectButton = functionFactory.getElement(".add.project");
 addProjectButton.addEventListener("click", () => {

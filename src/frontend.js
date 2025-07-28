@@ -11,18 +11,16 @@ function eraseNewTaskContainer () {
     functionFactory.removeElementHTML(container);
 }
 
-
 function modifyUIRightContainer(elementToShow) {
     const elementToModify = functionFactory.getElement(".new.task.container")
     functionFactory.removeElementHTML(elementToModify);
     functionFactory.appendChildToElement(elementToModify, elementToShow);
 }
 
-
 function modifyUIProjectsContainer() {
 
     // dummy data
-    const testTask1 = new Task("primera", "random task", "no");
+    //const testTask1 = new Task("primera", "random task", "no");
     // const testTask2 = new Task("2", "random task", "2");
     // const testTask3 = new Task("3", "random task", "3");
     // const testProject1 = new Project("primer_test_project");
@@ -43,6 +41,7 @@ function modifyUIProjectsContainer() {
 
     // obtenemos todos los proyectos (2)
     const projects = projectManager.getProjects();
+    console.log(projects);
 
     // ejecutar para actualizar el listado de projects (3)
     // por cada proyecto
@@ -54,18 +53,23 @@ function modifyUIProjectsContainer() {
             const newProjectHeader = functionFactory.createNewElement("div","project-header");
                 const newProjectTitle =  functionFactory.createNewElement("div","project-title","",project.name);
                 const addTaskButton = functionFactory.createNewElement("button","add-task", "", "+");
+                const removeProjectButton = functionFactory.createNewElement("button","remove-project", "", "X");
+
 
         // modificamos el boton de agregar tareas y lo vinculamos?
         addTaskButton.addEventListener("click", () => {
             newTaskAction(project); // <- PASAR el proyecto actual
         });
-
-        //
+        removeProjectButton.addEventListener("click", () => {
+            functionFactory.removeElementHTML(newProjectElement);
+            projectManager.removeProject(project);
+        })
 
 
         // appends
         functionFactory.appendChildToElement(newProjectHeader,newProjectTitle);
         functionFactory.appendChildToElement(newProjectHeader,addTaskButton);
+        functionFactory.appendChildToElement(newProjectHeader,removeProjectButton);
         functionFactory.appendChildToElement(newProjectElement,newProjectHeader);
         // obtenemos todas las tasks del proyecto correspondiente
         const tasks = project.getTasks();
@@ -119,6 +123,8 @@ function defaultUITaskContainer() {
     functionFactory.appendChildToElement(newTaskContainer, title);
     functionFactory.appendChildToElement(newTaskContainer, description);
     functionFactory.appendChildToElement(newTaskContainer, footer);
+
+    // create default project, default task and add them
 
 }
 
